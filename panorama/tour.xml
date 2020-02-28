@@ -1,0 +1,805 @@
+﻿<krpano version="1.20" title="Vivanta Sawai Madhopur Lodge">
+
+	<include url="skin/vtourskin.xml" />
+	<include url="plugins/circle_hotspots.xml"/>
+
+
+	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
+	<skin_settings maps="false"
+	               maps_type="google"
+	               maps_bing_api_key=""
+	               maps_google_api_key=""
+	               maps_zoombuttons="false"
+	               maps_loadonfirstuse="true"
+	               gyro="true"
+	               gyro_keeplookingdirection="false"
+	               webvr="true"
+	               webvr_keeplookingdirection="true"
+	               webvr_prev_next_hotspots="true"
+	               littleplanetintro="false"
+	               followmousecontrol="true"
+	               title="true"
+	               thumbs="true"
+	               thumbs_width="70" thumbs_height="45" thumbs_padding="10"
+	               thumbs_opened="true"
+	               thumbs_text="false"
+	               thumbs_dragging="true"
+	               thumbs_onhoverscrolling="false"
+	               thumbs_scrollbuttons="false"
+	               thumbs_scrollindicator="false"
+	               thumbs_loop="false"
+	               tooltips_buttons="false"
+	               tooltips_thumbs="true"
+	               tooltips_hotspots="true"
+	               tooltips_mapspots="false"
+	               deeplinking="false"
+	               loadscene_flags="MERGE"
+	               loadscene_blend="OPENBLEND(0.5, 0.0, 0.75, 0.05, linear)"
+	               loadscene_blend_prev="SLIDEBLEND(0.5, 180, 0.75, linear)"
+	               loadscene_blend_next="SLIDEBLEND(0.5,   0, 0.75, linear)"
+	               layout_width="100%"
+	               layout_maxwidth="814"
+	               controlbar_width="-24"
+	               controlbar_height="40"
+	               controlbar_offset="20"
+	               controlbar_offset_closed="-40"
+	               controlbar_overlap.no-fractionalscaling="10"
+	               controlbar_overlap.fractionalscaling="0"
+	               design_skin_images="vtourskin.png"
+	               design_bgcolor="0x2D3E50"
+	               design_bgalpha="0.8"
+	               design_bgborder="0"
+	               design_bgroundedge="1"
+	               design_bgshadow="0 4 10 0x000000 0.3"
+	               design_thumbborder_bgborder="3 0xFFFFFF 1.0"
+	               design_thumbborder_padding="2"
+	               design_thumbborder_bgroundedge="0"
+	               design_text_css="color:#FFFFFF; font-family:Arial;"
+	               design_text_shadow="1"
+	               />
+
+	<!--
+	    For an alternative skin design either change the <skin_settings> values 
+	    from above or optionally include one of the predefined designs from below.
+	-->
+	<!-- <include url="skin/vtourskin_design_flat_light.xml"  /> -->
+	<!-- <include url="skin/vtourskin_design_glass.xml"       /> -->
+	<include url="skin/vtourskin_design_ultra_light.xml" /> 
+	<!-- <include url="skin/vtourskin_design_117.xml"         /> -->
+	<!-- <include url="skin/vtourskin_design_117round.xml"    /> -->
+	<!-- <include url="skin/vtourskin_design_black.xml"       /> -->
+
+
+	<!-- startup action - load the first scene -->
+	<action name="startup" autorun="onstart">
+		if(startscene === null OR !scene[get(startscene)], copy(startscene,scene[0].name); );
+		loadscene(get(startscene), null, MERGE);
+		if(startactions !== null, startactions() );
+	</action>
+
+		<action name="do_crop_animation" scope="local" args="framewidth, frameheight, framerate">
+		<!-- define local variables -->
+		calc(local.xframes, (caller.imagewidth /framewidth) BOR 0);
+		calc(local.frames, xframes * ((caller.imageheight / frameheight) BOR 0));
+		def(local.frame, integer, 0);
+		
+		<!-- set the first frame -->
+		calc(caller.crop, '0|0|' + framewidth + '|' + frameheight);
+		
+		<!-- do the animation -->
+		setinterval(calc('crop_anim_' + caller.name), calc(1.0 / framerate),
+			if(caller.loaded,
+				inc(frame);
+				if(frame GE frames, if(caller.onlastframe !== null, callwith(caller, onlastframe() ) ); set(frame,0); );
+				mod(xpos, frame, xframes);
+				div(ypos, frame, xframes);
+				Math.floor(ypos);
+				mul(xpos, framewidth);
+				mul(ypos, frameheight);
+				calc(caller.crop, xpos + '|' + ypos + '|' + framewidth + '|' + frameheight);
+			  ,
+				<!-- stop the interval when the hotspot gets removed -->
+				clearinterval(calc('crop_anim_' + caller.name));
+			);
+		);
+	</action>  
+
+
+<!--style="hs_circle" tag="name_name"-->
+	
+	<scene name="scene_sawai_0_aerial_vew_center_lawn" title="Vivanta Sawai Aerial View" onstart="" thumburl="panos/sawai_0_aerial_vew_center_lawn.tiles/thumb.jpg" lat="26.01427167" lng="76.36283889" heading="0.0">
+
+		<view hlookat="1.827" vlookat="7.433" fovtype="MFOV" fov="103.488" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_0_aerial_vew_center_lawn.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_0_aerial_vew_center_lawn.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_13_deluxe_allure_suite_bedroom" style="hs_circle" tag="" ath="62.400" atv="8.268" linkedscene="scene_sawai_accomodation_13_deluxe_allure_suite_bedroom" />
+		<hotspot name="scene_sawai_accomodation_04_historical_suite_hall" style="hs_circle" tag="Premium Temptation Suite" ath="9.372" atv="1.662" linkedscene="scene_sawai_accomodation_04_historical_suite_hall" />
+		<hotspot name="scene_sawai_0_main_facade_evening_view" style="hs_circle" tag="Facade View" ath="-2.016" atv="49.215" linkedscene="scene_sawai_0_main_facade_evening_view" />
+		<hotspot name="scene_sawai_0_pool" style="hs_circle" tag="Swimming Pool" ath="136.956" atv="7.231" linkedscene="scene_sawai_0_pool" />
+		<hotspot name="scene_sawai_dining_restaurants_big_lamp_01" style="hs_circle" tag="Front Lawn View" ath="32.564" atv="7.865" linkedscene="scene_sawai_dining_restaurants_big_lamp_01" />
+		<hotspot name="scene_sawai_welcome_point_02_lobby" style="hs_circle" tag="Reception" ath="-20.154" atv="5.944" linkedscene="scene_sawai_welcome_point_02_lobby" />
+		<hotspot name="scene_sawai_spa_gym" style="hs_circle" tag="Gym" ath="-102.068" atv="11.021" linkedscene="scene_sawai_spa_gym" />
+		<hotspot name="scene_sawai_spa_treatment_room_02" style="hs_circle" tag="Treatment Room 1" ath="-126.079" atv="8.956" linkedscene="scene_sawai_spa_treatment_room_02" />
+		<hotspot name="scene_sawai_spa_reception" style="hs_circle" tag="Spa Reception" ath="-114.268" atv="10.022" linkedscene="scene_sawai_spa_reception" />
+
+	</scene>
+
+	<scene name="scene_sawai_0_main_facade_evening_view" title="Facade" onstart="" thumburl="panos/sawai_0_main_facade_evening_view.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.087" vlookat="0.780" fovtype="MFOV" fov="99.048" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_0_main_facade_evening_view.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_0_main_facade_evening_view.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_welcome_point_02_lobby" style="hs_circle" tag="Reception" ath="-18.202" atv="-0.261" linkedscene="scene_sawai_welcome_point_02_lobby" />
+		<hotspot name="scene_sawai_accomodation_13_deluxe_allure_suite_bedroom" style="hs_circle" tag="Deluxe Allure Suite" ath="89.695" atv="-1.995" linkedscene="scene_sawai_accomodation_13_deluxe_allure_suite_bedroom" />
+		<hotspot name="scene_sawai_0_pool" style="hs_circle" tag="Swimming Pool" ath="148.649" atv="-2.574" linkedscene="scene_sawai_0_pool" />
+		<hotspot name="scene_sawai_dining_restaurants_big_lamp_02" style="hs_circle" tag="Front Lawn View" ath="42.895" atv="-0.486" linkedscene="scene_sawai_dining_restaurants_big_lamp_02" />
+		<hotspot name="scene_sawai_spa_reception" style="hs_circle" tag="Spa Reception" ath="-125.612" atv="-0.936" linkedscene="scene_sawai_spa_reception" />
+		<hotspot name="scene_sawai_0_veranda_center_view" style="hs_circle" tag="Veranda" ath="-1.836" atv="0.139" linkedscene="scene_sawai_0_veranda_center_view" />
+
+	</scene>
+	
+	<scene name="scene_sawai_welcome_point_01" title="Welcome point" onstart="" thumburl="panos/sawai_welcome_point_01.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-36.443" vlookat="-0.474" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_welcome_point_01.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_welcome_point_01.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_welcome_point_02_lobby" style="hs_circle" tag="Lobby" ath="-3.921" atv="-1.334" linkedscene="scene_sawai_welcome_point_02_lobby" />
+		<hotspot name="scene_sawai_0_veranda_entrance_view" style="hs_circle" tag="Veranda" ath="59.891" atv="-0.485" linkedscene="scene_sawai_0_veranda_entrance_view" />
+		<hotspot name="scene_sawai_spa_reception" style="hs_circle" tag="Spa" ath="147.118" atv="-0.335" linkedscene="scene_sawai_spa_reception" />
+		<hotspot name="scene_sawai_0_pool" style="hs_circle" tag="Swimming Pool" ath="118.187" atv="-1.285" linkedscene="scene_sawai_0_pool" />
+		<hotspot name="scene_sawai_0_aerial_vew_center_lawn" style="hs_circle" tag="Aerial View" ath="119.006" atv="-31.090" linkedscene="scene_sawai_0_aerial_vew_center_lawn" />
+
+	</scene>
+
+	<scene name="scene_sawai_welcome_point_02_lobby" title="Lobby" onstart="" thumburl="panos/sawai_welcome_point_02_lobby.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="109.594" vlookat="4.295" fovtype="MFOV" fov="117.828" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_welcome_point_02_lobby.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_welcome_point_02_lobby.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_welcome_point_01" style="hs_circle" tag="Welcome point" ath="-124.658" atv="1.531" linkedscene="scene_sawai_welcome_point_01" />
+		<hotspot name="scene_sawai_welcome_point_03_lobby_stair" style="hs_circle" tag="Lobby Staircase" ath="108.016" atv="3.408" linkedscene="scene_sawai_welcome_point_03_lobby_stair" />
+
+	</scene>
+
+	<scene name="scene_sawai_welcome_point_03_lobby_stair" title="Lobby Staircase" onstart="" thumburl="panos/sawai_welcome_point_03_lobby_stair.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="88.075" vlookat="4.426" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_welcome_point_03_lobby_stair.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_welcome_point_03_lobby_stair.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_03_historical_suite_entrance_floor" style="hs_circle" tag="Heritage Wing " ath="52.374" atv="-20.501" linkedscene="scene_sawai_accomodation_03_historical_suite_entrance_floor" />
+		<hotspot name="scene_sawai_0_veranda_lounge_area" style="hs_circle" tag="Mural Lounge" ath="122.544" atv="2.553" linkedscene="scene_sawai_0_veranda_lounge_area" />
+		<hotspot name="scene_sawai_0_veranda_entrance_view" style="hs_circle" tag="Verandah" ath="-165.905" atv="3.108" linkedscene="scene_sawai_0_veranda_entrance_view" />
+		<hotspot name="scene_sawai_welcome_point_02_lobby" style="hs_circle" tag="Reception" ath="-130.583" atv="1.818" linkedscene="scene_sawai_welcome_point_02_lobby" />
+		<hotspot name="scene_sawai_dining_restaurant_main" style="hs_circle" tag="Restaurant" ath="-40.865" atv="5.521" linkedscene="scene_sawai_dining_restaurant_main" />
+
+	</scene>
+	
+		<scene name="scene_sawai_dining_restaurant_main" title="Restaurant" onstart="" thumburl="panos/sawai_dining_restaurant_main.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-45.577" vlookat="5.044" fovtype="MFOV" fov="120.000" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_dining_restaurant_main.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_dining_restaurant_main.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2112,4224" />
+		</image>
+		<hotspot name="scene_sawai_welcome_point_03_lobby_stair" style="hs_circle" tag="Lobby Staircase" ath="8.710" atv="-2.719" linkedscene="scene_sawai_welcome_point_03_lobby_stair" />
+
+	</scene>
+
+		<scene name="scene_sawai_dining_restaurants_big_lamp_01" title="Front Lawns" onstart="" thumburl="panos/sawai_dining_restaurants_big_lamp_01.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="3.313" vlookat="3.155" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_dining_restaurants_big_lamp_01.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_dining_restaurants_big_lamp_01.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_dining_restaurants_big_lamp_02" style="hs_circle" tag="Front Lawns" ath="-44.252" atv="3.777" linkedscene="scene_sawai_dining_restaurants_big_lamp_02" />
+		<hotspot name="scene_sawai_0_veranda_entrance_view" style="hs_circle" tag="Verandah" ath="-0.352" atv="-2.444" linkedscene="scene_sawai_0_veranda_entrance_view" />
+		<hotspot name="scene_sawai_dining_barbeque" style="hs_circle" tag="Bar Be Que" ath="84.107" atv="-0.380" linkedscene="scene_sawai_dining_barbeque" />
+
+	</scene>
+
+	<scene name="scene_sawai_dining_restaurants_big_lamp_02" title="Front Lawns" onstart="" thumburl="panos/sawai_dining_restaurants_big_lamp_02.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-84.254" vlookat="0.276" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_dining_restaurants_big_lamp_02.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_dining_restaurants_big_lamp_02.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_0_main_facade_evening_view" style="hs_circle" tag="Facade" ath="-118.832" atv="2.005" linkedscene="scene_sawai_0_main_facade_evening_view" />
+		<hotspot name="scene_sawai_dining_restaurants_big_lamp_01" style="hs_circle" tag="Front Lawns" ath="27.965" atv="-1.497" linkedscene="scene_sawai_dining_restaurants_big_lamp_01" />
+		<hotspot name="scene_sawai_dining_barbeque" style="hs_circle" tag="Bar Be Que" ath="16.041" atv="-1.296" linkedscene="scene_sawai_dining_barbeque" />
+
+	</scene>
+
+		<scene name="scene_sawai_dining_barbeque" title="Bar Be Que" onstart="" thumburl="panos/sawai_dining_barbeque.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_dining_barbeque.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_dining_barbeque.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_dining_restaurants_big_lamp_01" style="hs_circle" tag="Front Lawns" ath="139.814" atv="1.499" linkedscene="scene_sawai_dining_restaurants_big_lamp_01" />
+		<hotspot name="scene_sawai_dining_bush_dinner_1" style="hs_circle" tag="Bush Dinner" ath="-79.279" atv="-0.564" linkedscene="scene_sawai_dining_bush_dinner_1" />
+		<hotspot name="scene_sawai_dining_machan_view" style="hs_circle" tag="Machan" ath="175.504" atv="7.900" linkedscene="scene_sawai_dining_machan_view" />
+
+	</scene>
+
+	<scene name="scene_sawai_dining_machan_view" title="Machan" onstart="" thumburl="panos/sawai_dining_machan_view.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-117.657" vlookat="5.012" fovtype="MFOV" fov="85.530" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_dining_machan_view.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_dining_machan_view.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_dining_bush_dinner_1" style="hs_circle" tag="Bush Dinner" ath="-103.087" atv="0.044" linkedscene="scene_sawai_dining_bush_dinner_1" />
+		<hotspot name="scene_sawai_dining_barbeque" style="hs_circle" tag="Bar Be Que" ath="-53.755" atv="-0.292" linkedscene="scene_sawai_dining_barbeque" />
+		<hotspot name="scene_sawai_dining_restaurants_big_lamp_01" style="hs_circle" tag="Front Lawn view" ath="42.932" atv="-1.352" linkedscene="scene_sawai_dining_restaurants_big_lamp_01" />
+		<hotspot name="scene_sawai_dining_restaurant_main" style="hs_circle" tag="Restaurant" ath="107.943" atv="-2.370" linkedscene="scene_sawai_dining_restaurant_main" />
+
+	</scene>
+	<scene name="scene_sawai_dining_bush_dinner_1" title="Bush Dinner" onstart="" thumburl="panos/sawai_dining_bush_dinner_1.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-347.369" vlookat="3.290" fovtype="MFOV" fov="108.806" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_dining_bush_dinner_1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_dining_bush_dinner_1.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2112,4224" />
+		</image>
+		<hotspot name="scene_sawai_dining_barbeque" style="hs_circle" tag="Bar Be Que" ath="83.702" atv="-6.430" linkedscene="scene_sawai_dining_barbeque" />
+		<hotspot name="scene_sawai_dining_machan_view" style="hs_circle" tag="Machan" ath="97.142" atv="-6.324" linkedscene="scene_sawai_dining_machan_view" />
+
+	</scene>
+
+
+	<scene name="scene_sawai_0_veranda_entrance_view" title="Verandah" onstart="" thumburl="panos/sawai_0_veranda_entrance_view.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-76.707" vlookat="7.913" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_0_veranda_entrance_view.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_0_veranda_entrance_view.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_0_veranda_center_view" style="hs_circle" tag="Verandah" ath="-76.652" atv="0.252" linkedscene="scene_sawai_0_veranda_center_view" />
+		<hotspot name="scene_sawai_0_pool" style="hs_circle" tag="Swimming Pool" ath="-57.197" atv="-1.138" linkedscene="scene_sawai_0_pool" />
+		<hotspot name="scene_sawai_0_veranda_lounge_area" style="hs_circle" tag="Mural Lounge" ath="-108.475" atv="0.353" linkedscene="scene_sawai_0_veranda_lounge_area" />
+		<hotspot name="scene_sawai_welcome_point_01" style="hs_circle" tag="Welcome point" ath="56.515" atv="6.842" linkedscene="scene_sawai_welcome_point_01" />
+
+	</scene>
+
+	<scene name="scene_sawai_0_veranda_center_view" title="Verandah" onstart="" thumburl="panos/sawai_0_veranda_center_view.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-130.028" vlookat="5.845" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_0_veranda_center_view.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_0_veranda_center_view.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_0_veranda_lounge_area" style="hs_circle" tag="Mural Lounge" ath="-132.235" atv="-2.967" linkedscene="scene_sawai_0_veranda_lounge_area" />
+		<hotspot name="scene_sawai_welcome_point_02_lobby" style="hs_circle" tag="Lobby" ath="179.723" atv="-2.792" linkedscene="scene_sawai_welcome_point_02_lobby" />
+		<hotspot name="scene_sawai_0_aerial_vew_center_lawn" style="hs_circle" tag="Aerial view" ath="49.903" atv="-35.669" linkedscene="scene_sawai_0_aerial_vew_center_lawn" />
+		<hotspot name="scene_sawai_0_main_facade_evening_view" style="hs_circle" tag="Front Lawn view" ath="46.683" atv="1.499" linkedscene="scene_sawai_0_main_facade_evening_view" />
+		<hotspot name="scene_sawai_0_pool" style="hs_circle" tag="Pool" ath="14.154" atv="-1.642" linkedscene="scene_sawai_0_pool" />
+		<hotspot name="scene_sawai_accomodation_13_deluxe_allure_suite_bedroom" style="hs_circle" tag="Deluxe Allure Suite" ath="-7.335" atv="-1.063" linkedscene="scene_sawai_accomodation_13_deluxe_allure_suite_bedroom" />
+		<hotspot name="scene_sawai_dining_restaurants_big_lamp_01" style="hs_circle" tag="Front Lawn view"  ath="-62.855" atv="-2.930" linkedscene="scene_sawai_dining_restaurants_big_lamp_01" />
+		<hotspot name="scene_sawai_welcome_point_01" style="hs_circle" tag="Welcome point" ath="155.813" atv="-1.826" linkedscene="scene_sawai_welcome_point_01" />
+		<hotspot name="scene_sawai_spa_reception" style="hs_circle" tag="Spa" ath="80.370" atv="-1.066" linkedscene="scene_sawai_spa_reception" />
+
+	</scene>
+
+
+
+	<scene name="scene_sawai_0_pool" title="Swimming Pool" onstart="" thumburl="panos/sawai_0_pool.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="1.578" vlookat="2.367" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_0_pool.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_0_pool.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_0_aerial_vew_center_lawn" style="hs_circle" tag="Aerial view" ath="-86.879" atv="-27.906" linkedscene="scene_sawai_0_aerial_vew_center_lawn" />
+		<hotspot name="scene_sawai_0_veranda_entrance_view" style="hs_circle" tag="Veranda" ath="-27.398" atv="-1.100" linkedscene="scene_sawai_0_veranda_entrance_view" />
+
+	</scene>
+
+	<scene name="scene_sawai_spa_reception" title="Spa Reception" onstart="" thumburl="panos/sawai_spa_reception.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="116.514" vlookat="6.713" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_spa_reception.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_spa_reception.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_spa_treatment_room_01" style="hs_circle" tag="Spa Room" ath="137.933" atv="2.468" linkedscene="scene_sawai_spa_treatment_room_01" />
+		<hotspot name="scene_sawai_spa_treatment_room_02" style="hs_circle" tag="Spa Room" ath="65.504" atv="3.188" linkedscene="scene_sawai_spa_treatment_room_02" />
+		<hotspot name="scene_sawai_spa_gym" style="hs_circle" tag="Gym" ath="46.876" atv="5.618" linkedscene="scene_sawai_spa_gym" />
+
+	</scene>
+
+
+	<scene name="scene_sawai_spa_treatment_room_01" title="Spa Room" onstart="" thumburl="panos/sawai_spa_treatment_room_01.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="108.692" vlookat="11.335" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_spa_treatment_room_01.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_spa_treatment_room_01.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_spa_treatment_bthroom" style="hs_circle" tag="Spa Bathroom" ath="136.077" atv="2.177" linkedscene="scene_sawai_spa_treatment_bthroom" />
+		<hotspot name="scene_sawai_spa_reception" style="hs_circle" tag="Spa Reception" ath="-133.488" atv="9.026" linkedscene="scene_sawai_spa_reception" />
+
+	</scene>
+
+	<scene name="scene_sawai_spa_treatment_bthroom" title="Spa Bathroom" onstart="" thumburl="panos/sawai_spa_treatment_bthroom.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-37.516" vlookat="13.249" fovtype="MFOV" fov="107.993" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_spa_treatment_bthroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_spa_treatment_bthroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_spa_treatment_room_01" style="hs_circle" tag="Spa Room" ath="53.731" atv="2.547" linkedscene="scene_sawai_spa_treatment_room_01" />
+
+	</scene>
+
+	<scene name="scene_sawai_spa_treatment_room_02" title="Spa Room" onstart="" thumburl="panos/sawai_spa_treatment_room_02.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="80.742" vlookat="9.246" fovtype="MFOV" fov="98.525" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_spa_treatment_room_02.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_spa_treatment_room_02.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_spa_reception" style="hs_circle" tag="Spa Reception" ath="5.580" atv="2.532" linkedscene="scene_sawai_spa_reception" />
+
+	</scene>
+
+	<scene name="scene_sawai_spa_gym" title="Gym" onstart="" thumburl="panos/sawai_spa_gym.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-67.737" vlookat="14.723" fovtype="MFOV" fov="110.694" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_spa_gym.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_spa_gym.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_spa_treatment_room_02" style="hs_circle" tag="Spa Room" ath="140.391" atv="8.779" linkedscene="scene_sawai_spa_treatment_room_02" />
+		<hotspot name="scene_sawai_spa_reception" style="hs_circle" tag="Spa Reception" ath="156.992" atv="10.123" linkedscene="scene_sawai_spa_reception" />
+
+	</scene>
+
+	<scene name="scene_sawai_0_veranda_lounge_area" title="Mural Lounge" onstart="" thumburl="panos/sawai_0_veranda_lounge_area.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="130.186" vlookat="6.218" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_0_veranda_lounge_area.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_0_veranda_lounge_area.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_0_veranda_center_view" style="hs_circle" tag="Veranda" ath="-51.795" atv="8.993" linkedscene="scene_sawai_0_veranda_center_view" />
+		<hotspot name="scene_sawai_welcome_point_03_lobby_stair" style="hs_circle" tag="Lobby Staircase " ath="91.586" atv="-0.586" linkedscene="scene_sawai_welcome_point_03_lobby_stair" />
+
+	</scene>
+
+	<scene name="scene_sawai_accomodation_05_historical_suite_terace_view" title="Premium Temptation Suite Terrace" onstart="" thumburl="panos/sawai_accomodation_05_historical_suite_terace_view.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="81.824" vlookat="3.649" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_05_historical_suite_terace_view.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_05_historical_suite_terace_view.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_04_historical_suite_hall" style="hs_circle" tag="Premium Temptation Suite Living Room" ath="142.648" atv="-2.083" linkedscene="scene_sawai_accomodation_04_historical_suite_hall" />
+		<hotspot name="scene_sawai_accomodation_13_deluxe_allure_suite_bedroom" style="hs_circle" tag="Deluxe Allure Suite" ath="-145.785" atv="5.374" linkedscene="scene_sawai_accomodation_13_deluxe_allure_suite_bedroom" />
+		<hotspot name="scene_sawai_0_main_facade_evening_view" style="hs_circle" tag="Front Lawn view" ath="-98.542" atv="6.577" linkedscene="scene_sawai_0_main_facade_evening_view" />
+		<hotspot name="scene_sawai_0_aerial_vew_center_lawn" style="hs_circle" tag="Aerial View" ath="-95.223" atv="-29.523" linkedscene="scene_sawai_0_aerial_vew_center_lawn" />
+
+	</scene>
+
+	<scene name="scene_sawai_accomodation_04_historical_suite_hall" title="Premium Temptation Suite Living Room" onstart="" thumburl="panos/sawai_accomodation_04_historical_suite_hall.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-15.462" vlookat="11.042" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_04_historical_suite_hall.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_04_historical_suite_hall.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_03_historical_suite_entrance_floor" style="hs_circle" tag="Suite Corridor" ath="-149.824" atv="2.339" linkedscene="scene_sawai_accomodation_03_historical_suite_entrance_floor" />
+		<hotspot name="scene_sawai_accomodation_01_historical_suite_bedroom" style="hs_circle" tag="Premium Temptation Suite BedRoom" ath="154.385" atv="6.743" linkedscene="scene_sawai_accomodation_01_historical_suite_bedroom" />
+
+	</scene>
+
+	<scene name="scene_sawai_accomodation_01_historical_suite_bedroom" title="Premium Temptation Suite BedRoom" onstart="" thumburl="panos/sawai_accomodation_01_historical_suite_bedroom.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="68.292" vlookat="11.398" fovtype="MFOV" fov="105.755" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_01_historical_suite_bedroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_01_historical_suite_bedroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_02_historical_suite_bthrm" style="hs_circle" tag="Suite Bathroom" ath="135.157" atv="3.342" linkedscene="scene_sawai_accomodation_02_historical_suite_bthrm" />
+		<hotspot name="scene_sawai_accomodation_04_historical_suite_hall" style="hs_circle" tag="Suite Living Room" ath="-39.489" atv="1.774" linkedscene="scene_sawai_accomodation_04_historical_suite_hall" />
+		<hotspot name="scene_sawai_accomodation_05_historical_suite_terace_view" style="hs_circle" tag="Suite Terrace view" ath="-17.199" atv="1.675" linkedscene="scene_sawai_accomodation_05_historical_suite_terace_view" />
+
+	</scene>
+
+	<scene name="scene_sawai_accomodation_02_historical_suite_bthrm" title="Premium Temptation Suite BathRoom" onstart="" thumburl="panos/sawai_accomodation_02_historical_suite_bthrm.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="66.204" vlookat="13.082" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_02_historical_suite_bthrm.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_02_historical_suite_bthrm.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_01_historical_suite_bedroom" style="hs_circle" tag="Suite BedRoom" ath="-138.758" atv="1.380" linkedscene="scene_sawai_accomodation_01_historical_suite_bedroom" />
+
+	</scene>
+
+	<scene name="scene_sawai_accomodation_03_historical_suite_entrance_floor" title="Suite Corridor" onstart="" thumburl="panos/sawai_accomodation_03_historical_suite_entrance_floor.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="8.367" vlookat="9.749" fovtype="MFOV" fov="108.131" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_03_historical_suite_entrance_floor.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_03_historical_suite_entrance_floor.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_04_historical_suite_hall" style="hs_circle" tag="Premium Temptation Suite" ath="151.978" atv="-1.560" linkedscene="scene_sawai_accomodation_04_historical_suite_hall" />
+		<hotspot name="scene_sawai_welcome_point_03_lobby_stair" style="hs_circle" tag="Lobby" ath="33.008" atv="7.624" linkedscene="scene_sawai_welcome_point_03_lobby_stair" />
+
+	</scene>
+
+	<scene name="scene_sawai_accomodation_13_deluxe_allure_suite_bedroom" title="Deluxe Allure Suite" onstart="" thumburl="panos/sawai_accomodation_13_deluxe_allure_suite_bedroom.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="32.484" vlookat="9.608" fovtype="MFOV" fov="107.413" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_13_deluxe_allure_suite_bedroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_13_deluxe_allure_suite_bedroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_0_aerial_vew_center_lawn" style="hs_circle" tag="Aerila view" ath="87.608" atv="-0.388" linkedscene="scene_sawai_0_aerial_vew_center_lawn" />
+		<hotspot name="scene_sawai_accomodation_14_deluxe_allure_suite_bthroom" style="hs_circle" tag="Suite Bathroom" ath="-94.026" atv="4.182" linkedscene="scene_sawai_accomodation_14_deluxe_allure_suite_bthroom" />
+
+	</scene>
+
+	<scene name="scene_sawai_accomodation_14_deluxe_allure_suite_bthroom" title="Suite Bathroom" onstart="" thumburl="panos/sawai_accomodation_14_deluxe_allure_suite_bthroom.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="92.590" vlookat="8.281" fovtype="MFOV" fov="113.090" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_14_deluxe_allure_suite_bthroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_14_deluxe_allure_suite_bthroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_13_deluxe_allure_suite_bedroom" style="hs_circle" tag="Suite Bedroom" ath="-168.051" atv="-2.639" linkedscene="scene_sawai_accomodation_13_deluxe_allure_suite_bedroom" />
+
+	</scene>
+	
+	<scene name="scene_sawai_accomodation_09_d_block_premium_temptation_outside_view" title="Premium Temptation Suites" onstart="" thumburl="panos/sawai_accomodation_09_d_block_premium_temptation_outside_view.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="23.029" vlookat="4.889" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_09_d_block_premium_temptation_outside_view.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_09_d_block_premium_temptation_outside_view.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_08_d_block_premium_temptation_hall" style="hs_circle" tag="Premium Temptation Suite Twin" ath="24.696" atv="0.430" linkedscene="scene_sawai_accomodation_08_d_block_premium_temptation_hall" />
+		<hotspot name="scene_sawai_accomodation_01_d_block_premium_temptation_twin_hall" style="hs_circle" tag="Premium Temptation Suite Single" ath="6.910" atv="-1.879" linkedscene="scene_sawai_accomodation_01_d_block_premium_temptation_twin_hall" />
+
+	</scene>
+	
+	<scene name="scene_sawai_accomodation_01_d_block_premium_temptation_twin_hall" title="Premium Temptation Suite Living Room" onstart="" thumburl="panos/sawai_accomodation_01_d_block_premium_temptation_twin_hall.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="12.399" vlookat="12.928" fovtype="MFOV" fov="110.338" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_01_d_block_premium_temptation_twin_hall.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_01_d_block_premium_temptation_twin_hall.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_10_d_block_premium_temptation_twin_bedroom" style="hs_circle" tag="Bedroom" ath="-62.058" atv="6.317" linkedscene="scene_sawai_accomodation_10_d_block_premium_temptation_twin_bedroom" />
+		<hotspot name="scene_sawai_accomodation_09_d_block_premium_temptation_outside_view" style="hs_circle" tag="Premium Temptation Suites sit out" ath="82.296" atv="3.449" linkedscene="scene_sawai_accomodation_09_d_block_premium_temptation_outside_view" />
+		
+
+	</scene>
+	
+		<scene name="scene_sawai_accomodation_10_d_block_premium_temptation_twin_bedroom" title="Premium Temptation Suite BedRoom" onstart="" thumburl="panos/sawai_accomodation_10_d_block_premium_temptation_twin_bedroom.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="72.072" vlookat="9.667" fovtype="MFOV" fov="116.250" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_10_d_block_premium_temptation_twin_bedroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_10_d_block_premium_temptation_twin_bedroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_01_d_block_premium_temptation_twin_bthroom" style="hs_circle" tag="Suite Bathroom" ath="23.746" atv="2.677" linkedscene="scene_sawai_accomodation_01_d_block_premium_temptation_twin_bthroom" />
+		<hotspot name="scene_sawai_accomodation_01_d_block_premium_temptation_twin_hall" style="hs_circle" tag="Living Room" ath="-57.690" atv="3.129" linkedscene="scene_sawai_accomodation_01_d_block_premium_temptation_twin_hall" />
+
+	</scene>
+
+		<scene name="scene_sawai_accomodation_01_d_block_premium_temptation_twin_bthroom" title="Premium Temptation Suite bathroom" onstart="" thumburl="panos/sawai_accomodation_01_d_block_premium_temptation_twin_bthroom.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="122.527" vlookat="11.436" fovtype="MFOV" fov="109.575" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_01_d_block_premium_temptation_twin_bthroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_01_d_block_premium_temptation_twin_bthroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_10_d_block_premium_temptation_twin_bedroom" style="hs_circle" tag="BedRoom" ath="-43.701" atv="5.808" linkedscene="scene_sawai_accomodation_10_d_block_premium_temptation_twin_bedroom" />
+		
+
+	</scene>
+
+
+
+
+	<scene name="scene_sawai_accomodation_08_d_block_premium_temptation_hall" title="Premium Temptation Suite Living Room" onstart="" thumburl="panos/sawai_accomodation_08_d_block_premium_temptation_hall.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="123.397" vlookat="8.769" fovtype="MFOV" fov="106.813" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_08_d_block_premium_temptation_hall.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_08_d_block_premium_temptation_hall.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_06_d_block_premium_temptation_bedroom" style="hs_circle" tag="BedRoom" ath="-155.322" atv="9.227" linkedscene="scene_sawai_accomodation_06_d_block_premium_temptation_bedroom" />
+		<hotspot name="scene_sawai_accomodation_09_d_block_premium_temptation_outside_view" style="hs_circle" tag="Premium Temptation Suites sit out" ath="29.231" atv="4.004" linkedscene="scene_sawai_accomodation_09_d_block_premium_temptation_outside_view" />
+		
+
+	</scene>
+
+		<scene name="scene_sawai_accomodation_06_d_block_premium_temptation_bedroom" title="Premium Temptation Suite Bedroom" onstart="" thumburl="panos/sawai_accomodation_06_d_block_premium_temptation_bedroom.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-46.924" vlookat="10.133" fovtype="MFOV" fov="114.832" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_06_d_block_premium_temptation_bedroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_06_d_block_premium_temptation_bedroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		
+		<hotspot name="scene_sawai_accomodation_07_d_block_premium_temptation_bthroom" style="hs_circle" tag="Bathroom" ath="3.103" atv="2.991" linkedscene="scene_sawai_accomodation_07_d_block_premium_temptation_bthroom" />
+		<hotspot name="scene_sawai_accomodation_08_d_block_premium_temptation_hall" style="hs_circle" tag="Living room" ath="75.368" atv="3.918" linkedscene="scene_sawai_accomodation_08_d_block_premium_temptation_hall" />
+
+	</scene>
+
+	<scene name="scene_sawai_accomodation_07_d_block_premium_temptation_bthroom" title="Suite Bathroom" onstart="" thumburl="panos/sawai_accomodation_07_d_block_premium_temptation_bthroom.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="124.429" vlookat="9.152" fovtype="MFOV" fov="112.738" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_07_d_block_premium_temptation_bthroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_07_d_block_premium_temptation_bthroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_06_d_block_premium_temptation_bedroom" style="hs_circle" tag="Bedroom" ath="-45.310" atv="-0.394" linkedscene="scene_sawai_accomodation_06_d_block_premium_temptation_bedroom" />
+
+	</scene>
+	
+	<scene name="scene_sawai_accomodation_11_c_block_corridor_view" title="Deluxe Allure Rooms Corridor" onstart="" thumburl="panos/sawai_accomodation_11_c_block_corridor_view.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-42.429" vlookat="13.406" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_11_c_block_corridor_view.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_11_c_block_corridor_view.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		
+		<hotspot name="scene_sawai_accomodation_20_deluxe_allure_suite_with_private_sitout_twinbed_bedroom" style="hs_circle" tag="Deluxe Allure Suite" ath="-16.784" atv="-0.469" linkedscene="scene_sawai_accomodation_20_deluxe_allure_suite_with_private_sitout_twinbed_bedroom" />
+		<hotspot name="scene_sawai_accomodation_16_deluxe_allure_suite_double_bed" style="hs_circle" tag="Deluxe Allure Suite" ath="-82.959" atv="3.006" linkedscene="scene_sawai_accomodation_16_deluxe_allure_suite_double_bed" />
+		<hotspot name="scene_sawai_accomodation_09_d_block_premium_temptation_outside_view" style="hs_circle" tag="Premium Temptation Suites"  ath="6.858" atv="-0.425" linkedscene="scene_sawai_accomodation_09_d_block_premium_temptation_outside_view" />
+
+	</scene>
+
+
+	<scene name="scene_sawai_accomodation_16_deluxe_allure_suite_double_bed" title="Deluxe Allure Suite" onstart="" thumburl="panos/sawai_accomodation_16_deluxe_allure_suite_double_bed.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="4.799" vlookat="8.350" fovtype="MFOV" fov="105.154" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_16_deluxe_allure_suite_double_bed.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_16_deluxe_allure_suite_double_bed.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_15_deluxe_allure_suite_double_bed_bthroom" style="hs_circle" tag="Bathroom" ath="-133.143" atv="8.033" linkedscene="scene_sawai_accomodation_15_deluxe_allure_suite_double_bed_bthroom" />
+		<hotspot name="scene_sawai_accomodation_11_c_block_corridor_view" style="hs_circle" tag="Corridor view" ath="42.866" atv="0.836" linkedscene="scene_sawai_accomodation_11_c_block_corridor_view" />
+
+	</scene>
+
+	<scene name="scene_sawai_accomodation_15_deluxe_allure_suite_double_bed_bthroom" title="Deluxe Allure Suite Bathroom" onstart="" thumburl="panos/sawai_accomodation_15_deluxe_allure_suite_double_bed_bthroom.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-70.922" vlookat="6.444" fovtype="MFOV" fov="114.530" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_15_deluxe_allure_suite_double_bed_bthroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_15_deluxe_allure_suite_double_bed_bthroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_16_deluxe_allure_suite_double_bed" style="hs_circle" tag="Bedroom" ath="-125.488" atv="0.987" linkedscene="scene_sawai_accomodation_16_deluxe_allure_suite_double_bed" />
+
+	</scene>
+	
+	<scene name="scene_sawai_accomodation_17_deluxe_allure_suite_with_private_sitout_bedroom" title="Deluxe Allure Suite" onstart="" thumburl="panos/sawai_accomodation_17_deluxe_allure_suite_with_private_sitout_bedroom.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="88.937" vlookat="15.342" fovtype="MFOV" fov="113.265" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_17_deluxe_allure_suite_with_private_sitout_bedroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_17_deluxe_allure_suite_with_private_sitout_bedroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_19_deluxe_allure_suite_with_private_sitout_openair" style="hs_circle" tag="Deluxe Allure Suite Private Sit out" ath="-63.310" atv="6.765" linkedscene="scene_sawai_accomodation_19_deluxe_allure_suite_with_private_sitout_openair" />
+		<hotspot name="scene_sawai_accomodation_18_deluxe_allure_suite_with_private_sitout_bthroom" style="hs_circle" tag="Bathroom" ath="-167.083" atv="10.380" linkedscene="scene_sawai_accomodation_18_deluxe_allure_suite_with_private_sitout_bthroom" />
+		<hotspot name="scene_sawai_accomodation_11_c_block_corridor_view" style="hs_circle" tag="Corridor View" ath="152.944" atv="2.592" linkedscene="scene_sawai_accomodation_11_c_block_corridor_view" />
+
+	</scene>
+
+	<scene name="scene_sawai_accomodation_18_deluxe_allure_suite_with_private_sitout_bthroom" title="Deluxe Allure Suite Bathroom" onstart="" thumburl="panos/sawai_accomodation_18_deluxe_allure_suite_with_private_sitout_bthroom.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="16.911" vlookat="10.825" fovtype="MFOV" fov="115.307" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_18_deluxe_allure_suite_with_private_sitout_bthroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_18_deluxe_allure_suite_with_private_sitout_bthroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_17_deluxe_allure_suite_with_private_sitout_bedroom" style="hs_circle" tag="Bedroom" ath="92.166" atv="5.878" linkedscene="scene_sawai_accomodation_17_deluxe_allure_suite_with_private_sitout_bedroom" />
+
+	</scene>
+
+	<scene name="scene_sawai_accomodation_19_deluxe_allure_suite_with_private_sitout_openair" title="Deluxe Allure Suite Private Sit out" onstart="" thumburl="panos/sawai_accomodation_19_deluxe_allure_suite_with_private_sitout_openair.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="94.333" vlookat="9.732" fovtype="MFOV" fov="111.073" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_19_deluxe_allure_suite_with_private_sitout_openair.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_19_deluxe_allure_suite_with_private_sitout_openair.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_17_deluxe_allure_suite_with_private_sitout_bedroom" style="hs_circle" tag="Bedroom" ath="-34.588" atv="4.325" linkedscene="scene_sawai_accomodation_17_deluxe_allure_suite_with_private_sitout_bedroom" />
+
+	</scene>
+
+	<scene name="scene_sawai_accomodation_20_deluxe_allure_suite_with_private_sitout_twinbed_bedroom" title="Deluxe Allure Suite Bedroom" onstart="" thumburl="panos/sawai_accomodation_20_deluxe_allure_suite_with_private_sitout_twinbed_bedroom.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="45.010" vlookat="12.095" fovtype="MFOV" fov="106.446" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_20_deluxe_allure_suite_with_private_sitout_twinbed_bedroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_20_deluxe_allure_suite_with_private_sitout_twinbed_bedroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_21_deluxe_allure_suite_with_private_sitout_twinbed_bthroom" style="hs_circle" tag="Bathroom" ath="-26.539" atv="3.280" linkedscene="scene_sawai_accomodation_21_deluxe_allure_suite_with_private_sitout_twinbed_bthroom" />
+		<hotspot name="scene_sawai_accomodation_22_deluxe_allure_suite_with_private_sitout_twinbed_hall" style="hs_circle" tag="Living Room" ath="-75.770" atv="0.987" linkedscene="scene_sawai_accomodation_22_deluxe_allure_suite_with_private_sitout_twinbed_hall" />
+		<hotspot name="scene_sawai_accomodation_11_c_block_corridor_view" style="hs_circle" tag="Corridor View" ath="-116.952" atv="8.530" linkedscene="scene_sawai_accomodation_11_c_block_corridor_view" />
+
+	</scene>
+
+	<scene name="scene_sawai_accomodation_21_deluxe_allure_suite_with_private_sitout_twinbed_bthroom" title="Deluxe Allure Suite Bathroom" onstart="" thumburl="panos/sawai_accomodation_21_deluxe_allure_suite_with_private_sitout_twinbed_bthroom.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="11.977" vlookat="11.962" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_21_deluxe_allure_suite_with_private_sitout_twinbed_bthroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_21_deluxe_allure_suite_with_private_sitout_twinbed_bthroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_20_deluxe_allure_suite_with_private_sitout_twinbed_bedroom" style="hs_circle" tag="Bedroom" ath="83.605" atv="3.959" linkedscene="scene_sawai_accomodation_20_deluxe_allure_suite_with_private_sitout_twinbed_bedroom" />
+
+	</scene>
+
+	<scene name="scene_sawai_accomodation_22_deluxe_allure_suite_with_private_sitout_twinbed_hall" title="Deluxe Allure Suite Living Room" onstart="" thumburl="panos/sawai_accomodation_22_deluxe_allure_suite_with_private_sitout_twinbed_hall.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.288" vlookat="7.606" fovtype="MFOV" fov="114.791" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_accomodation_22_deluxe_allure_suite_with_private_sitout_twinbed_hall.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_accomodation_22_deluxe_allure_suite_with_private_sitout_twinbed_hall.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_accomodation_11_c_block_corridor_view" style="hs_circle" tag="Corridor View" ath="-69.060" atv="-0.522" linkedscene="scene_sawai_accomodation_11_c_block_corridor_view" />
+		<hotspot name="scene_sawai_accomodation_20_deluxe_allure_suite_with_private_sitout_twinbed_bedroom" style="hs_circle" tag="Bedroom" ath="-139.909" atv="3.539" linkedscene="scene_sawai_accomodation_20_deluxe_allure_suite_with_private_sitout_twinbed_bedroom" />
+
+	</scene>
+
+		<scene name="scene_sawai_conference_hall" title="Ranthambore Hall" onstart="" thumburl="panos/sawai_conference_hall.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="2.524" vlookat="10.571" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_conference_hall.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_conference_hall.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_sawai_0_aerial_vew_outside" title="Awan Ki Chokie from above" onstart="" thumburl="panos/sawai_0_aerial_vew_outside.tiles/thumb.jpg" lat="25.88398444" lng="76.41712278" heading="0.0">
+
+		<view hlookat="-26.490" vlookat="20.529" fovtype="MFOV" fov="110.024" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_0_aerial_vew_outside.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_0_aerial_vew_outside.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_dining_country_side_hiils" style="hs_circle" tag="Awan Ki Chokie Terrace view" ath="-30.952" atv="25.445" linkedscene="scene_sawai_dining_country_side_hiils" />
+
+	</scene>
+
+	<scene name="scene_sawai_dining_country_side_hiils" title="Awan Ki Chokie Terrace" onstart="" thumburl="panos/sawai_dining_country_side_hiils.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="318.215" vlookat="16.885" fovtype="MFOV" fov="120.000" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_dining_country_side_hiils.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_dining_country_side_hiils.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_dining_country_side_hills_02" style="hs_circle" tag="Awan Ki Chokie Veranda" ath="58.329" atv="29.196" linkedscene="scene_sawai_dining_country_side_hills_02" />
+		<hotspot name="scene_sawai_0_aerial_vew_outside" style="hs_circle" tag="Awan Ki Chokie from Above" ath="-40.848" atv="-27.043" linkedscene="scene_sawai_0_aerial_vew_outside" />
+
+	</scene>
+
+	<scene name="scene_sawai_dining_country_side_hills_02" title="Awan Ki Chokie Veranda" onstart="" thumburl="panos/sawai_dining_country_side_hills_02.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-28.653" vlookat="7.932" fovtype="MFOV" fov="102.467" maxpixelzoom="1.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/sawai_dining_country_side_hills_02.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/sawai_dining_country_side_hills_02.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,768,1664,3200" />
+		</image>
+		<hotspot name="scene_sawai_dining_country_side_hiils" style="hs_circle" tag="Awan Ki Chokie Terrace" ath="-140.958" atv="-16.520" linkedscene="scene_sawai_dining_country_side_hiils" />
+		<hotspot name="scene_sawai_0_aerial_vew_outside" style="hs_circle" tag="Awan Ki Chokie from Above" ath="45.652" atv="-22.423" linkedscene="scene_sawai_0_aerial_vew_outside" />
+
+	</scene>
+
+
+</krpano>
